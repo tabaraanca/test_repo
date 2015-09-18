@@ -3,11 +3,10 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 18, 2015 at 08:07 PM
+-- Generation Time: Sep 18, 2015 at 08:24 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -42,9 +41,9 @@ CREATE TABLE IF NOT EXISTS `questions` (
   `answer_9` varchar(255) DEFAULT NULL,
   `answer_10` varchar(255) DEFAULT NULL,
   `correct` varchar(255) NOT NULL,
-  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) TYPE=InnoDB  AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `questions`
@@ -69,9 +68,9 @@ CREATE TABLE IF NOT EXISTS `scores` (
   `criteria` varchar(255) NOT NULL,
   `q_right` int(11) NOT NULL,
   `q_wrong` int(11) NOT NULL,
-  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) TYPE=InnoDB AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -86,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `tests` (
   `user_answers` varchar(255) NOT NULL,
   `number_answers` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) TYPE=InnoDB AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
