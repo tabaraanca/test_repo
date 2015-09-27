@@ -146,6 +146,18 @@ class db_class {
     public function saveScores($id,$score) {
         $this->run_query("UPDATE tests SET score = '$score' WHERE id = '$id'");
     }
+
+    public function getReport($scores_id) {
+        return $this->fetchAll("SELECT * FROM `tests` LEFT JOIN questions ON tests.questions_id = questions.id WHERE scores_id = '$scores_id'");
+    }
+
+    public function markTestAsCompleted($scores_id,$score) {
+        $this->run_query("UPDATE scores SET score = '$score', finished = 1 WHERE id = '$scores_id'");
+    }
+
+    public function getHighScores() {
+        return $this->fetchAll("SELECT * FROM scores WHERE finished = 1 ORDER BY score DESC");
+    }
 	
 }
 

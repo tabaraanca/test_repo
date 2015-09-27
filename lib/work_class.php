@@ -13,7 +13,10 @@ class work_class {
     public $routes = array(
         "home" => "home",
         "pre_test" => "test_page",
-        "mid_test" => "mid_test_page"
+        "mid_test" => "mid_test_page",
+        "report" => "report_page",
+        "score" => "score_page",
+        "high-score" => "high-score-page"
     );
 
 	public function isPost($name=null) {
@@ -24,6 +27,13 @@ class work_class {
         if(!empty($_POST)) return true;
 
         return false;
+    }
+
+    public function getGet($name) {
+        if(isset($_GET[$name]))
+            return $_GET[$name];
+
+        return null;
     }
 
     public function getPost($name) {
@@ -38,11 +48,34 @@ class work_class {
             $this->preTestLogic();
         elseif($this->route()==$this->routes["mid_test"])
             $this->midTestLogic();
+        elseif($this->route()==$this->routes["score"])
+            $this->prepareScore();
+        elseif($this->route()==$this->routes["report"])
+            $this->reportLogic();
+        elseif($this->route()==$this->routes["high-score"])
+            $this->highScoreLogic();
         elseif($this->route()==$this->routes["home"])
             $this->homeLogic();
         else
             die("ruta nu exista!");
 
+    }
+
+    public function highScoreLogic() {
+        $this->view->scores = $this->view->db->getHighScores();
+        $this->view->loadView("high_score_page");
+
+    }
+
+    public function reportLogic() {
+        $this->view->user_name = $this->sessionGet("user_name");
+        $this->view->score = $this->sessionGet("user_score");
+        $this->view->report = $this->getReport();
+        $this->view->loadView("report_page");
+    }
+
+    public function getReport() {
+        return $this->view->db->getReport($this->sessionGet("score_id"));
     }
 
     public function homeLogic() {
@@ -54,6 +87,11 @@ class work_class {
             if ($this->isPost("user_name")) return $this->routes["pre_test"]; //first question
             elseif ($this->isPost("answer_1")) return $this->routes["mid_test"]; //next questions
         }
+
+        if($this->getGet("report")) return $this->routes["report"]; //report page
+        if($this->getGet("score")) return $this->routes["score"]; //score page
+        if($this->getGet("high-score")) return $this->routes["high-score"]; //score page
+
         return $this->routes["home"]; //default route
     }
 
@@ -122,6 +160,9 @@ class work_class {
     public function prepareScore() {
         $user_answers = $this->view->db->getCorrectAnswers($this->sessionGet("score_id"));
         if($user_answers) $this->computeScore($user_answers);
+
+        $this->markTestAsCompleted();
+
         $this->view->score = $this->user_score;
         $this->loadScorePage();
     }
@@ -141,6 +182,12 @@ class work_class {
         } else { //no more questions
             $this->prepareScore();
         }
+    }
+
+    public function markTestAsCompleted() {
+        $this->view->db->markTestAsCompleted($this->score_id,$this->user_score);
+
+        return $this;
     }
 
     public function handleTestType() {

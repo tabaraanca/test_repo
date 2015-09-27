@@ -3,3 +3,41 @@
 * {
 	font-family: Arial, Helvetica, sans-serif;
 }
+
+.correct {
+    color: #4fcc35;
+}
+
+.wrong {
+    color: #d62718;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.number {
+    text-align: right;
+    padding-right:90px;
+}
+
+.text {
+    padding-left: 60px;
+}
+
+td {
+    width:100px;
+    padding:5px;
+    border-bottom: 1px solid lightgray;
+}
+
+th {
+    border-bottom: 1px solid lightgray;
+}
+
+.menu {
+    float:left;
+    font-size: 15px;
+    padding:2px 10px;
+    border-right: 1px solid lightgray;
+}
