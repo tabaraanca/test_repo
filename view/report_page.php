@@ -1,9 +1,24 @@
 <h2>pagina de scor</h2>
 <p>numele tau este: <?=$this->user_name?></p>
 <hr />
-<h3>Scorul este: <?=$this->score?></h3>
-<h4>raspunsuri:</h4>
+<div class="left">
+    <h3>Scorul este: <?=$this->score?></h3>
+</div>
+
+<div class="left score_cat">
+    <u>Scorul pe categorie:</u> <br />
+
+    <?foreach($this->score_by_category as $item):?>
+        <div class="clear <?=$this->setScoreClass($item["cat_score"])?>">
+            <?=$item["cat"]?>:
+            <span class="right"><?=$item["cat_score"]?></span>
+        </div>
+    <?endforeach?>
+</div>
+<br class="clear" />
 <hr />
+<h4>raspunsuri:</h4>
+
 <?foreach($this->report as $question):?>
     <p>intrebare <?=$question["category"]?> (<i>scor: <?=$question["score"]?></i>) </p>
     <h4>nr. <?=$question["id"]?>

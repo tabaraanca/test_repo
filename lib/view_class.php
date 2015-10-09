@@ -4,6 +4,10 @@ class view_class {
     public $user_name;
     public $question;
     public $answers = array();
+    public $user_answer = array();
+    public $score_id;
+    public $first_page;
+    public $score_by_category;
     public $load_page = "home";
     public $rank = array(
         10=>"xc-ist",
@@ -45,6 +49,10 @@ class view_class {
 
     public function getQuestion($id) {
         $this->question = $this->db->getQuestion($id);
+        if($this->score_id)
+            $this->user_answer = $this->db->getUserAnswers($id,$this->score_id);
+        else $this->user_answer = array();
+
         $this->getAnswers();
     }
 
@@ -83,6 +91,21 @@ class view_class {
         foreach($this->rank as $score=>$rank) {
             if($user_score>=$score) return $rank;
         }
+    }
+
+    public function setScoreId($id) {
+        $this->score_id = $id;
+    }
+
+    public function isAnswerChecked($index) {
+        if(is_array($this->user_answer) && in_array($index,$this->user_answer)) return "checked='checked'";
+        return "";
+    }
+
+    public function setScoreClass($score) {
+        if($score==10) return "bold correct";
+        if($score>=8) return "correct";
+        return "wrong";
     }
 }
 ?>

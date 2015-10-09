@@ -16,7 +16,8 @@ class work_class {
         "mid_test" => "mid_test_page",
         "report" => "report_page",
         "score" => "score_page",
-        "high-score" => "high-score-page"
+        "high-score" => "high-score-page",
+        "prev_question" => "prev_question"
     );
 
 	public function isPost($name=null) {
@@ -56,8 +57,26 @@ class work_class {
             $this->highScoreLogic();
         elseif($this->route()==$this->routes["home"])
             $this->homeLogic();
+        elseif($this->route()==$this->routes["prev_question"])
+            $this->prevQuestionLogic();
         else
             die("ruta nu exista!");
+
+    }
+
+    public function prevQuestionLogic() {
+        $this->current_question = $this->sessionGet("current_question");
+        $current_key = array_search($this->current_question,$this->sessionGet("questions_ids"));
+        $this->view->user_name = $this->sessionGet("user_name");
+
+        if(isset($this->questions_ids[$current_key-2])) { //there are still questions
+            $this->sessionSet("current_question", $this->questions_ids[$current_key - 1]);
+            $this->view->setScoreId($this->sessionGet("score_id"));
+            $this->view->getQuestion($this->current_question);
+            $this->view->loadView("next_page");
+        } else { //at first question
+            $this->displayFirstTestPage();
+        }
 
     }
 
@@ -71,7 +90,12 @@ class work_class {
         $this->view->user_name = $this->sessionGet("user_name");
         $this->view->score = $this->sessionGet("user_score");
         $this->view->report = $this->getReport();
+        $this->view->score_by_category = $this->getScoreByCategory();
         $this->view->loadView("report_page");
+    }
+
+    public function getScoreByCategory() {
+        return $this->view->db->getScoreByCategory($this->sessionGet("score_id"));
     }
 
     public function getReport() {
@@ -85,7 +109,8 @@ class work_class {
     public function route() {
         if ($this->isPost()) {
             if ($this->isPost("user_name")) return $this->routes["pre_test"]; //first question
-            elseif ($this->isPost("answer_1")) return $this->routes["mid_test"]; //next questions
+            elseif ($this->isPost("forward")) return $this->routes["mid_test"]; //next questions
+            elseif ($this->isPost("back")) return $this->routes["prev_question"]; //prev questions
         }
 
         if($this->getGet("report")) return $this->routes["report"]; //report page
@@ -135,8 +160,10 @@ class work_class {
     }
 
     public function displayFirstTestPage() {
+        $this->view->setScoreId($this->sessionGet("score_id"));
         $this->view->getQuestion($this->questions_ids[0]); //get first question
         $this->sessionSet("current_question",$this->questions_ids[0]);
+        $this->view->first_page = true;
         $this->view->loadView("test_page");
     }
 
@@ -177,6 +204,8 @@ class work_class {
         if(isset($this->questions_ids[$current_key+1])) { //there are still questions
             $this->sessionSet("current_question", $this->questions_ids[$current_key + 1]);
 
+            $this->view->user_name = $this->sessionGet("user_name");
+            $this->view->setScoreId($this->sessionGet("score_id"));
             $this->view->getQuestion($this->current_question);
             $this->view->loadView("test_page");
         } else { //no more questions

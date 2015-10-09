@@ -158,6 +158,23 @@ class db_class {
     public function getHighScores() {
         return $this->fetchAll("SELECT * FROM scores WHERE finished = 1 ORDER BY score DESC");
     }
+
+    public function getUserAnswers($question_id,$score_id) {
+        $data = $this->fetchAll("SELECT user_answers FROM tests WHERE questions_id = $question_id AND scores_id = $score_id");
+        if(is_array($data) && count($data)>0) {
+            $data = reset($data);
+            return explode(",",$data["user_answers"]);
+        }
+        return null;
+    }
+
+    public function getScoreByCategory($scores_id) {
+        return $this->fetchAll("SELECT questions.category AS cat, AVG(tests.score) AS cat_score FROM `tests`
+                  LEFT JOIN questions ON tests.questions_id = questions.id
+                  WHERE scores_id = '$scores_id'
+                  GROUP BY questions.category");
+
+    }
 	
 }
 
