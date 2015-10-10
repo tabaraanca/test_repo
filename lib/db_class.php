@@ -2,7 +2,7 @@
 class db_class {
 	public $handler;
 	public $result;
-    public $question_set_number = 2; //should be 10
+    public $question_set_number = 10; //should be 10
 	
 	public function connect_db($host,$user,$pass) {
 		$this->handler = mysqli_connect($host,$user,$pass);
