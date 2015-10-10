@@ -4,8 +4,11 @@
     <h2>continua testul</h2>
 <?endif?>
 
-<p>numele tau este: <?=$this->user_name?></p>
-<hr />
+<p class="menu">numele tau este: <?=$this->user_name?></p>
+<p class="menu">intrebarea <?=$this->current_question?> din <?=$this->total_questions?></p>
+<p class="menu"><?=$this->type?></p>
+<hr class="clear" />
+
 <p>intrebare <?=$this->question["category"]?> </p>
 <h4>nr. <?=$this->question["id"]?>
     <?=$this->question["text"]?>
@@ -22,7 +25,7 @@
     <?if($this->first_page):?>
         <input type="button" disabled="disabled" value="&laquo; inapoi" />
     <?else:?>
-        <input type="button" name="back" value="&laquo; inapoi" />
+        <input type="submit" name="back" value="&laquo; inapoi" />
     <?endif?>
     <input type="submit" name="forward" value="inainte &raquo;" />
 </form>

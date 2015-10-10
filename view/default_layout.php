@@ -13,6 +13,7 @@
             </div>
         </div>
         <br />
+        <p class="<?=$this->setErrorClass()?>"><?=$this->getError()?>&nbsp;</p>
         <? $this->loadPage()?>
 	</body>
 </html>

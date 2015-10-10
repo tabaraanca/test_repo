@@ -9,6 +9,8 @@ class view_class {
     public $first_page;
     public $score_by_category;
     public $load_page = "home";
+    public $error;
+    public $category;
     public $rank = array(
         10=>"xc-ist",
         9=>"vultur chel",
@@ -106,6 +108,20 @@ class view_class {
         if($score==10) return "bold correct";
         if($score>=8) return "correct";
         return "wrong";
+    }
+
+    public function setErrorClass() {
+        if($this->error) return "show";
+        return "hide";
+    }
+
+    public function getError() {
+        return $this->error;
+    }
+
+    public function isCatSelected($cat) {
+        if($this->category==$cat) return 'selected="selected"';
+        return "";
     }
 }
 ?>

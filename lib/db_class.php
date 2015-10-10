@@ -69,7 +69,7 @@ class db_class {
         return $this->fetchResult("SELECT * FROM questions WHERE id = $id");
     }
 
-    public function initDBTest($user_name) {
+    public function initDBTest($user_name,$type) {
         $user_name = $this->escape($user_name);
         $result = $this->fetchResult("SELECT name,finished FROM scores WHERE name = '$user_name' AND finished = 1");
         if($result) return false; //user already exists and has finished the quiz
@@ -79,7 +79,7 @@ class db_class {
             return $result2["id"];
         }
 
-        $this->run_query("INSERT INTO scores (name) VALUES ('$user_name')");
+        $this->run_query("INSERT INTO scores (name,criteria) VALUES ('$user_name','$type')");
 
         if(!empty($this->handler->insert_id))
             return $this->handler->insert_id;
@@ -126,10 +126,44 @@ class db_class {
         return $arrIds;
     }
 
+    public function getQuestionsByCategory($cat) {
+        $arrIds = array();
+        $result = $this->fetchAll("SELECT id FROM questions WHERE category = '$cat' ORDER BY RAND()");
+        foreach($result as $item) {
+            $arrIds[] = $item["id"];
+        }
+
+        shuffle($arrIds);
+
+        return $arrIds;
+    }
+
+    public function getQuestionsForAll() {
+        $arrIds = array();
+        foreach($this->getCategories() as $category) {
+            $result = $this->fetchAll("SELECT id FROM questions WHERE category = '$category' ORDER BY RAND()");
+            foreach($result as $item) {
+                $arrIds[] = $item["id"];
+            }
+        }
+
+        shuffle($arrIds);
+
+        return $arrIds;
+    }
+
     public function checkIfQuestionList($user_name) {
         $user_name = $this->escape($user_name);
         $result = $this->fetchResult("SELECT test_setup FROM scores WHERE name = '$user_name'");
         if($result && !empty($result["test_setup"])) return explode(",",$result["test_setup"]);
+
+        return false;
+    }
+
+    public function getType($user_name) {
+        $user_name = $this->escape($user_name);
+        $result = $this->fetchResult("SELECT criteria FROM scores WHERE name = '$user_name'");
+        if($result && !empty($result["criteria"])) return $result["criteria"];
 
         return false;
     }

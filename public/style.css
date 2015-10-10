@@ -58,3 +58,12 @@ th {
 .score_cat {
     margin-left:20px;
 }
+
+.show {
+    color:#d62718;
+    visibility: visible;
+}
+
+.hide {
+    visibility: hidden;
+}

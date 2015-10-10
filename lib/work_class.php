@@ -9,6 +9,7 @@ class work_class {
     public $user_name;
     public $type; //test type
     public $user_score=0;
+    private $error;
 
     public $routes = array(
         "home" => "home",
@@ -45,6 +46,10 @@ class work_class {
     }
 
     public function run() {
+        if($this->getError()) {
+            $this->homeLogic();
+            return;
+        }
         if($this->route()==$this->routes["pre_test"])
             $this->preTestLogic();
         elseif($this->route()==$this->routes["mid_test"])
@@ -60,7 +65,7 @@ class work_class {
         elseif($this->route()==$this->routes["prev_question"])
             $this->prevQuestionLogic();
         else
-            die("ruta nu exista!");
+            $this->setError("ruta nu exista!");
 
     }
 
@@ -68,16 +73,27 @@ class work_class {
         $this->current_question = $this->sessionGet("current_question");
         $current_key = array_search($this->current_question,$this->sessionGet("questions_ids"));
         $this->view->user_name = $this->sessionGet("user_name");
+        $this->view->type = $this->getTestType();
 
         if(isset($this->questions_ids[$current_key-2])) { //there are still questions
             $this->sessionSet("current_question", $this->questions_ids[$current_key - 1]);
+
             $this->view->setScoreId($this->sessionGet("score_id"));
+            $this->view->total_questions = count($this->questions_ids);
+            $this->view->current_question = $current_key;
             $this->view->getQuestion($this->current_question);
-            $this->view->loadView("next_page");
+            $this->view->loadView("test_page");
         } else { //at first question
             $this->displayFirstTestPage();
         }
 
+    }
+
+    public function getTestType() {
+        $this->sessionGet("type");
+        if($this->type=="standard") return "Test standard (10 intrebari din 8 categorii)";
+        elseif($this->type=="all") return "Test din toate intrebarile";
+        else return "Test cu intrebari din categoria ".$this->type;
     }
 
     public function highScoreLogic() {
@@ -103,6 +119,8 @@ class work_class {
     }
 
     public function homeLogic() {
+        $this->view->category = $this->sessionGet("type");
+        $this->view->user_name = $this->sessionGet("user_name");
         $this->view->loadView("home");
     }
 
@@ -156,14 +174,17 @@ class work_class {
             ->initiateTest()
             ->handleTestType()
             ->displayFirstTestPage();
-        //TODO: isi dea seama de tipul de test si sa-l creeze
     }
 
     public function displayFirstTestPage() {
         $this->view->setScoreId($this->sessionGet("score_id"));
         $this->view->getQuestion($this->questions_ids[0]); //get first question
         $this->sessionSet("current_question",$this->questions_ids[0]);
+        $this->view->total_questions = count($this->questions_ids);
+        $this->view->current_question = 1;
         $this->view->first_page = true;
+        $this->view->type = $this->getTestType();
+
         $this->view->loadView("test_page");
     }
 
@@ -205,8 +226,12 @@ class work_class {
             $this->sessionSet("current_question", $this->questions_ids[$current_key + 1]);
 
             $this->view->user_name = $this->sessionGet("user_name");
+            $this->view->total_questions = count($this->questions_ids);
+            $this->view->current_question = $current_key+2;
             $this->view->setScoreId($this->sessionGet("score_id"));
             $this->view->getQuestion($this->current_question);
+            $this->view->type = $this->getTestType();
+
             $this->view->loadView("test_page");
         } else { //no more questions
             $this->prepareScore();
@@ -222,12 +247,24 @@ class work_class {
     public function handleTestType() {
         if($this->questions_ids = $this->view->db->checkIfQuestionList($this->user_name)) {
             $this->sessionSet("questions_ids",$this->questions_ids);
+            $this->sessionSet("type",$this->view->db->getType($this->user_name));
             return $this;
         }
-        //for standard type
-        $this->sessionSet("questions_ids",$this->view->db->getQuestionsForStandard());
-        $this->saveQuestionsIds();
-        //TODO: handle also other test types
+
+        $this->selectTestType()
+            ->saveQuestionsIds();
+
+        return $this;
+    }
+
+    public function selectTestType() {
+        if($this->type=="standard") {
+            $this->sessionSet("questions_ids", $this->view->db->getQuestionsForStandard());
+        } elseif(in_array($this->type,$this->view->db->getCategories())) {
+            $this->sessionSet("questions_ids", $this->view->db->getQuestionsByCategory($this->type));
+        } elseif($this->type=="all") {
+            $this->sessionSet("questions_ids", $this->view->db->getQuestionsForAll());
+        }
         return $this;
     }
 
@@ -237,10 +274,10 @@ class work_class {
 
     public function initiateTest() {
         $this->view->user_name = $this->sessionGet("user_name");
-        if($score_id = $this->view->db->initDBTest($this->view->user_name)) {
+        if($score_id = $this->view->db->initDBTest($this->view->user_name,$this->type)) {
             $this->sessionSet("score_id",$score_id);
         }
-        if(!$score_id) die("numele exista deja");
+        if(!$score_id) $this->setError("numele exista deja");
 
         return $this;
     }
@@ -252,7 +289,10 @@ class work_class {
     }
 
     public function storeUsername() {
-        if(!$this->getPost("user_name")) die("introdu numele");
+        if(!$this->getPost("user_name")) $this->setError("introdu numele");
+        if(!preg_match("/^[A-Za-z ]+$/",trim($this->getPost("user_name"))))
+            $this->setError("numele poate contine numai litere");
+
         $this->sessionSet("user_name",$this->getPost("user_name"));
 
         return $this;
@@ -277,6 +317,18 @@ class work_class {
             $this->{$name} = null;
             unset($_SESSION[$this->session_namespace][$name]);
         }
+    }
+
+    public function setError($error) {
+        $this->sessionSet("error",$error);
+        header("location: /");
+        exit;
+    }
+
+    public function getError() {
+        $this->view->error = $this->sessionGet("error");
+        $this->sessionRem("error");
+        return $this->view->error;
     }
 
 
