@@ -140,5 +140,9 @@ class view_class {
         if($type=="all") return "Toate intrebarile";
         return $type;
     }
+
+    public function showScore($score) {
+        return number_format($score,2,","," ");
+    }
 }
 ?>

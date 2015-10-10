@@ -18,11 +18,11 @@
 
 .number {
     text-align: right;
-    padding-right: 72px;
+    padding-right: 38px;
 }
 
 .text {
-    padding-left: 27px;
+    padding: 0 49px;
 }
 
 td {
