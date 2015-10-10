@@ -24,6 +24,18 @@ class view_class {
         1=>"soarec",
         0=>"bolovan"
     );
+    public $answer_letter = array(
+        1=>"a)",
+        2=>"b)",
+        3=>"c)",
+        4=>"d)",
+        5=>"e)",
+        6=>"f)",
+        7=>"g)",
+        8=>"h)",
+        9=>"i)",
+        10=>"j)"
+    );
 
 	public function loadView($name) {
         $this->load_page = $name;
@@ -122,6 +134,11 @@ class view_class {
     public function isCatSelected($cat) {
         if($this->category==$cat) return 'selected="selected"';
         return "";
+    }
+
+    public function getType($type) {
+        if($type=="all") return "Toate intrebarile";
+        return $type;
     }
 }
 ?>

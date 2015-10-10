@@ -1,0 +1,9 @@
+Options +FollowSymLinks
+RewriteEngine On
+
+RewriteRule    ^clasament$    /?high-score=true    [NC,L]
+RewriteRule    ^scor$    /?score=true    [NC,L]
+RewriteRule    ^raspunsuri$    /?report=true    [NC,L]
+
+
+

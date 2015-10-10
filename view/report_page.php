@@ -27,7 +27,7 @@
     <?for($i=1;$i<=10;$i++):?>
         <?if(!empty($question["answer_".$i])):?>
             <p class="<?=$this->setClass($i,$question)?>">
-                <?=$i?>. <?=$question["answer_".$i]?> <?=$this->isUserAnswer($i,$question)?>
+                <?=$this->answer_letter[$i]?> <?=$question["answer_".$i]?> <?=$this->isUserAnswer($i,$question)?>
             </p>
         <?endif?>
     <?endfor?>

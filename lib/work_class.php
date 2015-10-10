@@ -29,6 +29,12 @@ class work_class {
         "only_letters" => "Numele poate contine numai litere"
     );
 
+    public $category_text = array(
+        "standard" => "Test standard (10 intrebari din 8 categorii)",
+        "category" => "Test cu intrebari din categoria ",
+        "all" => "Test din toate intrebarile"
+    );
+
 	public function isPost($name=null) {
         if($name) {
             if(!is_null($this->getPost($name))) return true;
@@ -54,6 +60,8 @@ class work_class {
     }
 
     public function run() {
+        $this->checkIndex();
+
         if($this->getError()) {
             $this->homeLogic();
             return;
@@ -75,6 +83,13 @@ class work_class {
         else
             $this->setError("ruta nu exista!");
 
+    }
+
+    public function checkIndex() {
+        if(strpos($_SERVER["REQUEST_URI"],"index")!==false) {
+            header("Location: /");
+            exit;
+        }
     }
 
     public function prevQuestionLogic() {
@@ -99,9 +114,9 @@ class work_class {
 
     public function getTestType() {
         $this->sessionGet("type");
-        if($this->type=="standard") return "Test standard (10 intrebari din 8 categorii)";
-        elseif($this->type=="all") return "Test din toate intrebarile";
-        else return "Test cu intrebari din categoria ".$this->type;
+        if($this->type=="standard") return $this->category_text["standard"];
+        elseif($this->type=="all") return $this->category_text["all"];
+        else return $this->category_text["category"].$this->type;
     }
 
     public function highScoreLogic() {

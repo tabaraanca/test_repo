@@ -9,7 +9,9 @@
 <p class="menu"><?=$this->type?></p>
 <hr class="clear" />
 
-<p>Intrebare din <i><?=$this->question["category"]?> </i> </p>
+<p>Intrebare din <i><?=$this->question["category"]?> </i>
+    <span class="small">(adaugata la: <?=$this->question["date"]?>)</span>
+</p>
 <h4>Nr. <?=$this->question["id"]?>
     <?=$this->question["text"]?>
 </h4>
@@ -18,7 +20,7 @@
         <p>
             <input type="hidden" name="answer_<?=$index?>" value="0" />
             <input type="checkbox" name="answer_<?=$index?>" <?=$this->isAnswerChecked($index)?> value="1" />
-            <?=$answer?>
+            <?=$this->answer_letter[$index]?> <?=$answer?>
         </p>
     <?endforeach?>
     <hr />
