@@ -10,6 +10,7 @@ class work_class {
     public $type; //test type
     public $user_score=0;
     private $error;
+    private $return_to_index;
 
     public $routes = array(
         "home" => "home",
@@ -19,6 +20,13 @@ class work_class {
         "score" => "score_page",
         "high-score" => "high-score-page",
         "prev_question" => "prev_question"
+    );
+
+    public $error_msg = array(
+        "unfinished_test" => "A fost inceput deja un test cu acest nume, dar nu a fost finalizat. Se poate reincepe alt tip de test schimband numele.",
+        "name_exists" => "Acest nume a fost folosit deja",
+        "name_empty" => "Trebuie completat numele",
+        "only_letters" => "Numele poate contine numai litere"
     );
 
 	public function isPost($name=null) {
@@ -119,6 +127,7 @@ class work_class {
     }
 
     public function homeLogic() {
+        $this->sessionSet("return_to_index",true);
         $this->view->category = $this->sessionGet("type");
         $this->view->user_name = $this->sessionGet("user_name");
         $this->view->loadView("home");
@@ -248,6 +257,8 @@ class work_class {
         if($this->questions_ids = $this->view->db->checkIfQuestionList($this->user_name)) {
             $this->sessionSet("questions_ids",$this->questions_ids);
             $this->sessionSet("type",$this->view->db->getType($this->user_name));
+            if($this->sessionGet("return_to_index"))
+                $this->view->error = $this->error_msg["unfinished_test"];
             return $this;
         }
 
@@ -277,7 +288,7 @@ class work_class {
         if($score_id = $this->view->db->initDBTest($this->view->user_name,$this->type)) {
             $this->sessionSet("score_id",$score_id);
         }
-        if(!$score_id) $this->setError("numele exista deja");
+        if(!$score_id) $this->setError($this->error_msg["name_exists"]);
 
         return $this;
     }
@@ -289,9 +300,9 @@ class work_class {
     }
 
     public function storeUsername() {
-        if(!$this->getPost("user_name")) $this->setError("introdu numele");
+        if(!$this->getPost("user_name")) $this->setError($this->error_msg["name_empty"]);
         if(!preg_match("/^[A-Za-z ]+$/",trim($this->getPost("user_name"))))
-            $this->setError("numele poate contine numai litere");
+            $this->setError($this->error_msg["only_letters"]);
 
         $this->sessionSet("user_name",$this->getPost("user_name"));
 
