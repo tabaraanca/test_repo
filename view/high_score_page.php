@@ -1,4 +1,4 @@
-<h2>clasament</h2>
+<h2>Clasament</h2>
 <table>
     <th>Loc</th>
     <th>Nume</th>

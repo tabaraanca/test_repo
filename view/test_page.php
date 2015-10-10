@@ -1,16 +1,16 @@
 <?if($this->first_page):?>
-    <h2>incepe testul</h2>
+    <h2>Incepe testul</h2>
 <?else:?>
-    <h2>continua testul</h2>
+    <h2>Continua testul</h2>
 <?endif?>
 
-<p class="menu">numele tau este: <?=$this->user_name?></p>
-<p class="menu">intrebarea <?=$this->current_question?> din <?=$this->total_questions?></p>
+<p class="menu">Numele tau este:<i> <?=$this->user_name?></i> </p>
+<p class="menu">Intrebarea <?=$this->current_question?> din <?=$this->total_questions?></p>
 <p class="menu"><?=$this->type?></p>
 <hr class="clear" />
 
-<p>intrebare <?=$this->question["category"]?> </p>
-<h4>nr. <?=$this->question["id"]?>
+<p>Intrebare din <i><?=$this->question["category"]?> </i> </p>
+<h4>Nr. <?=$this->question["id"]?>
     <?=$this->question["text"]?>
 </h4>
 <form action="" method="post">
@@ -23,9 +23,9 @@
     <?endforeach?>
     <hr />
     <?if($this->first_page):?>
-        <input type="button" disabled="disabled" value="&laquo; inapoi" />
+        <input type="button" disabled="disabled" class = "tab" value="&laquo; Inapoi" />
     <?else:?>
-        <input type="submit" name="back" value="&laquo; inapoi" />
+        <input type="submit" name="back" class = "tab" value="&laquo; Inapoi" />
     <?endif?>
-    <input type="submit" name="forward" value="inainte &raquo;" />
+    <input type="submit" name="forward" class = "tab" value="Inainte &raquo;" />
 </form>

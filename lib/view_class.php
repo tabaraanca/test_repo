@@ -43,9 +43,9 @@ class view_class {
         $arrCategory["standard"] = "Examen standard";
         
         foreach($this->db->getCategories() as $category) {
-            $arrCategory[$category] = "pe categorie - ".$category;
+            $arrCategory[$category] = "Pe categorie - ".$category;
         }
-        $arrCategory["all"] = "aleator, din toate intrebarile";
+        $arrCategory["all"] = "Aleator, din toate intrebarile";
         return $arrCategory;
     }
 

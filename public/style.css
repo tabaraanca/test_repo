@@ -5,7 +5,7 @@
 }
 
 .correct {
-    color: #4fcc35;
+    color: rgba(12,214,67,1);
 }
 
 .wrong {
@@ -37,7 +37,7 @@ th {
 
 .menu {
     float:left;
-    font-size: 15px;
+    font-size: 18px;
     padding:2px 10px;
     border-right: 1px solid lightgray;
 }
@@ -53,6 +53,8 @@ th {
 
 .clear {
     clear: both;
+    font-size: 16px;
+    line-height: 23px;
 }
 
 .score_cat {
@@ -62,8 +64,57 @@ th {
 .show {
     color:#d62718;
     visibility: visible;
+    padding-left: 30px;
 }
 
 .hide {
     visibility: hidden;
 }
+body {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: 15%;
+    width:900px;;
+    height: auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(29, 35, 191, 0.70);
+    border-radius: 10px;
+}
+
+html{
+    background: url(\wingover_clouds.jpg);
+    background-size: cover;
+}
+
+form{
+    padding-left: 40px;
+}
+
+h1{
+    text-align: center;
+    padding-top: 30px;;
+}
+
+h2,h3,h4 {
+    padding-left: 30px;
+    color: #173B6E;
+}
+
+table {
+    margin-left: 15%;
+}
+
+p {
+    padding-left: 35px;
+}
+
+a {
+    color: #234F8B;
+}
+.tab {
+    height: 25px;
+    font-size: 15px;
+    border-radius: 5px;
+    background-color: rgba(151, 190, 220, 0.28);
+}
+
