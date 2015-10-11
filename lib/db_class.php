@@ -110,7 +110,6 @@ class db_class {
             $query .= implode(",",$values);
         }
 
-        error_log("save answers log: ".$query);
         return $this->run_query($query);
     }
 
