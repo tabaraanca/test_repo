@@ -25,6 +25,7 @@ class db_class {
 		if (!$this->result) {
 			die('Invalid query: ' . mysqli_error($this->handler)."<br />".$query);
 		}
+        return $this->result;
 	}
 	
 	public function getResult() {
@@ -109,7 +110,8 @@ class db_class {
             $query .= implode(",",$values);
         }
 
-        $this->run_query($query);
+        error_log("save answers log: ".$query);
+        return $this->run_query($query);
     }
 
     public function getQuestionsForStandard() {

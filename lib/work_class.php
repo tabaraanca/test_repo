@@ -187,9 +187,12 @@ class work_class {
             "user_answers"=>$this->getUserAnswers(),
             "number_answers"=>$this->getAnswersNumber()
         );
-        $this->view->db->saveAnswers($data);
-
-        return $this;
+        if($this->view->db->saveAnswers($data))
+            return $this;
+        else {
+            error_log("db error: ".print_r($data,1));
+            die("db error");
+        }
     }
 
     public function preTestLogic() {
