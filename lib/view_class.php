@@ -144,5 +144,12 @@ class view_class {
     public function showScore($score) {
         return number_format($score,2,","," ");
     }
+
+    public function handleDate($date) {
+        $timestamp = strtotime($date);
+        date_default_timezone_set('Europe/Bucharest');
+        $date = date("Y-m-d H:i:s",$timestamp);
+        return $date;
+    }
 }
 ?>

@@ -10,7 +10,7 @@
 <hr class="clear" />
 
 <p>Intrebare din <i><?=$this->question["category"]?> </i>
-    <span class="small">(adaugata la: <?=$this->question["date"]?>)</span>
+    <span class="small">(adaugata la: <?=$this->handleDate($this->question["date"])?>)</span>
 </p>
 <h4>Nr. <?=$this->question["id"]?>
     <?=$this->question["text"]?>

@@ -11,7 +11,7 @@
         <td class="text"><?=$score["name"]?></td>
         <td class="number"><?=$this->showScore($score["score"])?></td>
         <td class="text"><?=$this->getType($score["criteria"])?></td>
-        <td class="text date"><?=$score["date"]?></td>
+        <td class="text date"><?=$this->handleDate($score["date"])?></td>
     </tr>
 <?endforeach?>
 </table>
