@@ -7,7 +7,10 @@
         <h1>Teste parapanta</h1>
         <div class="header">
             <div class="menu">
-                <a href="/">Pagina de index</a>
+                <a href="http://wingover.ro">Acasa</a>
+            </div>
+            <div class="menu">
+                <a href="/">Teste parapanta</a>
             </div>
             <div class="menu">
                 <a href="/clasament">Clasament</a>
