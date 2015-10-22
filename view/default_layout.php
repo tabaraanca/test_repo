@@ -13,7 +13,13 @@
                 <a href="/">Teste parapanta</a>
             </div>
             <div class="menu">
+                <a href="/scor">Scor</a>
+            </div>
+            <div class="menu">
                 <a href="/clasament">Clasament</a>
+            </div>
+            <div class="menu">
+                <a href="/de_citit">De citit</a>
             </div>
         </div>
         <br />

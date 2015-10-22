@@ -19,7 +19,8 @@ class work_class {
         "report" => "report_page",
         "score" => "score_page",
         "high-score" => "high-score-page",
-        "prev_question" => "prev_question"
+        "prev_question" => "prev_question",
+        "readme" => "readme"
     );
 
     public $error_msg = array(
@@ -80,6 +81,8 @@ class work_class {
             $this->homeLogic();
         elseif($this->route()==$this->routes["prev_question"])
             $this->prevQuestionLogic();
+        elseif($this->route()==$this->routes["readme"])
+            $this->readmePage();
         else
             $this->setError("ruta nu exista!");
 
@@ -90,6 +93,10 @@ class work_class {
             header("Location: /");
             exit;
         }
+    }
+
+    public function readmePage() {
+        $this->view->loadView("readme_page");
     }
 
     public function prevQuestionLogic() {
@@ -157,7 +164,8 @@ class work_class {
 
         if($this->getGet("report")) return $this->routes["report"]; //report page
         if($this->getGet("score")) return $this->routes["score"]; //score page
-        if($this->getGet("high-score")) return $this->routes["high-score"]; //score page
+        if($this->getGet("high-score")) return $this->routes["high-score"]; //high score page
+        if($this->getGet("readme")) return $this->routes["readme"]; //readme page
 
         return $this->routes["home"]; //default route
     }
