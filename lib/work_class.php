@@ -31,7 +31,7 @@ class work_class {
     );
 
     public $category_text = array(
-        "standard" => "Test standard (10 intrebari din 8 categorii)",
+        "standard" => "Test standard (10 intrebari din 9 categorii)",
         "category" => "Test cu intrebari din categoria ",
         "all" => "Test din toate intrebarile"
     );
