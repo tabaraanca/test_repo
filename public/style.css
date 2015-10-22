@@ -125,3 +125,15 @@ a {
     font-size:12px;
 }
 
+.right_question {
+    background-color: rgba(0, 255, 17, 0.04);
+}
+
+.wrong_question {
+    background-color: rgba(255, 40, 4, 0.04);
+}
+
+.user_answer {
+    font-style: italic;
+}
+

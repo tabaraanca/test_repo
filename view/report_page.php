@@ -20,18 +20,21 @@
 <h4>Raspunsuri:</h4>
 
 <?foreach($this->report as $question):?>
-    <p>Intrebare: <i><?=$question["category"]?></i>
-        <i class="date">(scor: <?=$this->showScore($question["score"])?>)</i>
-    </p>
-    <h4>Nr. <?=$question["id"]?>
-        <?=$question["text"]?>
-    </h4>
-    <?for($i=1;$i<=10;$i++):?>
-        <?if(!empty($question["answer_".$i])):?>
-            <p class="<?=$this->setClass($i,$question)?>">
-                <?=$this->answer_letter[$i]?> <?=$question["answer_".$i]?> <?=$this->isUserAnswer($i,$question)?>
-            </p>
-        <?endif?>
-    <?endfor?>
+    <div class="<?=$this->setQuestionClass($question["score"])?>">
+        <p>Intrebare: <i><?=$question["category"]?></i>
+            <i class="date">(scor: <?=$this->showScore($question["score"])?>)</i>
+        </p>
+        <h4>Nr. <?=$question["id"]?>
+            <?=$question["text"]?>
+        </h4>
+        <?for($i=1;$i<=10;$i++):?>
+            <?if(!empty($question["answer_".$i])):?>
+                <p class="<?=$this->setClass($i,$question)?>">
+                    <?=$this->answer_letter[$i]?> <?=$question["answer_".$i]?>
+                    <span class="user_answer"><?=$this->isUserAnswer($i,$question)?></span>
+                </p>
+            <?endif?>
+        <?endfor?>
+    </div>
     <hr />
 <?endforeach?>

@@ -225,11 +225,28 @@ class work_class {
         foreach($data as $item) {
             $score = 0;
             if($item["user_answers"]==$item["correct"]) $score = 10;
+            else $score = $this->computePartialScore($item["user_answers"],$item["correct"]);
             $this->view->db->saveScores($item["id"],$score);
             $score_sum += $score;
         }
         $this->user_score = $score_sum/count($data);
         $this->sessionSet("user_score",$this->user_score);
+    }
+
+    private function computePartialScore($user_score,$correct_score) {
+        $arrCorrect = explode(",",$correct_score);
+        $arrUser = explode(",",$user_score);
+
+        $score_unit = 10/count($arrCorrect);
+
+        $correct_by_user = count(array_intersect($arrCorrect,$arrUser));
+        $wrong_by_user = count(array_diff($arrUser,$arrCorrect));
+
+        $score = $correct_by_user*$score_unit;
+        $score -= $wrong_by_user*$score_unit;
+        if($score<0) $score = 0;
+
+        return $score;
     }
 
     public function prepareScore() {

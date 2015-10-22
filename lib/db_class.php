@@ -191,7 +191,16 @@ class db_class {
     }
 
     public function getHighScores() {
-        return $this->fetchAll("SELECT * FROM scores WHERE finished = 1 ORDER BY score DESC");
+        $data = $this->fetchAll("SELECT * FROM scores WHERE finished = 1 AND date > '".date("Y-m-d H:i:s",time()-(60*60*24*30))."'");
+        usort($data,function($a,$b) {
+            if($a["score"]>$b["score"]) return -1;
+            elseif($a["score"]<$b["score"]) return 1;
+            elseif($a["score"]==$b["score"]) {
+                if($a["date"]>$b["date"]) return -1;
+                else return 1;
+            }
+        });
+        return $data;
     }
 
     public function getUserAnswers($question_id,$score_id) {

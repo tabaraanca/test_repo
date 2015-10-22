@@ -96,7 +96,7 @@ class view_class {
 
     public function isUserAnswer($index,$question) {
         $arrUserAnswers = explode(",",$question['user_answers']);
-        if(in_array($index,$arrUserAnswers)) return "<-- raspunsul tau";
+        if(in_array($index,$arrUserAnswers)) return "&nbsp;&nbsp;&nbsp;&laquo;&nbsp;raspunsul&nbsp;tau";
 
         return "";
     }
@@ -118,7 +118,7 @@ class view_class {
 
     public function setScoreClass($score) {
         if($score==10) return "bold correct";
-        if($score>=8) return "correct";
+        if($score>=7.5) return "correct";
         return "wrong";
     }
 
@@ -150,6 +150,11 @@ class view_class {
         date_default_timezone_set('Europe/Bucharest');
         $date = date("Y-m-d H:i:s",$timestamp);
         return $date;
+    }
+
+    public function setQuestionClass($score) {
+        if($score==10) return "right_question";
+        else return "wrong_question";
     }
 }
 ?>
